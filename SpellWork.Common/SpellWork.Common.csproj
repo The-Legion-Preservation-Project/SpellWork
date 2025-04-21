@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
         <RootNamespace>SpellWork</RootNamespace>
         <LangVersion>13</LangVersion>
     </PropertyGroup>

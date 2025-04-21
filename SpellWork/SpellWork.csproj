@@ -156,7 +156,8 @@
     <Compile Include="DBC\Structures\SpellTotemsEntry.cs" />
     <Compile Include="DBC\Structures\SpellVisualEntry.cs" />
     <Compile Include="DBC\Structures\SpellXSpellVisualEntry.cs" />
-    <Compile Include="Extensions\LinqExtensions.cs" />
+    <Compile Include="Extensions\CheckedListBoxExtensions.cs" />
+    <Compile Include="Extensions\ComboBoxExtensions.cs" />
     <Compile Include="Extensions\TreeViewExtensions.cs" />
     <Compile Include="DBC\DBC.cs" />
     <Compile Include="Forms\FormCalculateFlags.cs">
@@ -202,7 +203,6 @@
     <Compile Include="Spell\ProcInfo.cs">
     </Compile>
     <Compile Include="Extensions\RichTextBoxExtensions.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Spell\SpellCompare.cs" />
     <Compile Include="Forms\FormMain.cs">
       <SubType>Form</SubType>
