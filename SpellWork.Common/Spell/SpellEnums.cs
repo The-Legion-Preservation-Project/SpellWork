@@ -1372,7 +1372,7 @@ namespace SpellWork.Spell
     };
 
     [Flags]
-    enum InventoryTypeMask
+    public enum InventoryTypeMask
     {
         ALL             = -1,
         NON_EQUIP       = 1 << 0,
@@ -1914,7 +1914,7 @@ namespace SpellWork.Spell
     };
 
     [Flags]
-    enum SpellAtributeEx11 : uint
+    public enum SpellAtributeEx11 : uint
     {
         SPELL_ATTR11_UNK0                            = 0x00000001, //  0
         SPELL_ATTR11_UNK1                            = 0x00000002, //  1
@@ -1951,7 +1951,7 @@ namespace SpellWork.Spell
     };
 
     [Flags]
-    enum SpellAtributeEx12 : uint
+    public enum SpellAtributeEx12 : uint
     {
         SPELL_ATTR12_UNK0                            = 0x00000001, //  0
         SPELL_ATTR12_UNK1                            = 0x00000002, //  1
@@ -1988,7 +1988,7 @@ namespace SpellWork.Spell
     };
 
     [Flags]
-    enum SpellAtributeEx13 : uint
+    public enum SpellAtributeEx13 : uint
     {
         SPELL_ATTR13_UNK0                            = 0x00000001, //  0
         SPELL_ATTR13_UNK1                            = 0x00000002, //  1
@@ -2103,7 +2103,7 @@ namespace SpellWork.Spell
     };
 
     [Flags]
-    enum SpellInterruptFlags
+    public enum SpellInterruptFlags
     {
         SPELL_INTERRUPT_FLAG_MOVEMENT       = 0x01, // why need this for instant?
         SPELL_INTERRUPT_FLAG_PUSH_BACK      = 0x02, // push back
@@ -2114,14 +2114,14 @@ namespace SpellWork.Spell
     };
 
     [Flags]
-    enum SpellChannelInterruptFlags
+    public enum SpellChannelInterruptFlags
     {
         CHANNEL_INTERRUPT_FLAG_INTERRUPT    = 0x0008,  // interrupt
         CHANNEL_FLAG_DELAY                  = 0x4000
     };
 
     [Flags]
-    enum SpellAuraInterruptFlags
+    public enum SpellAuraInterruptFlags
     {
         AURA_INTERRUPT_FLAG_HITBYSPELL                  = 0x00000001,   // 0    removed when getting hit by a negative spell?
         AURA_INTERRUPT_FLAG_TAKE_DAMAGE                 = 0x00000002,   // 1    removed by any damage
