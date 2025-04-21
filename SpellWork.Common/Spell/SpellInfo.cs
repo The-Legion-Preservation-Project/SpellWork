@@ -223,7 +223,7 @@ namespace SpellWork.Spell
 
         public SpellInfo(SpellEntry spellEntry)
         {
-            SpellDescriptionVariablesEntry variables;
+            //SpellDescriptionVariablesEntry variables;
             Spell = spellEntry;
             //if (DBC.DBC.SpellDescriptionVariables.TryGetValue(spellEntry.DescriptionVariablesID, out variables))
             //    DescriptionVariables = variables;
