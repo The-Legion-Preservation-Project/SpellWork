@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Configuration;
 using MySql.Data.MySqlClient;
 using SpellWork.Extensions;
-using SpellWork.Properties;
 
 namespace SpellWork.Database
 {
@@ -20,12 +19,12 @@ namespace SpellWork.Database
         {
             get
             {
-                if (Settings.Default.Host == ".")
+                if (ConfigurationManager.AppSettings["Host"] == ".")
                     return
-                        $"Server=localhost;Pipe={Settings.Default.PortOrPipe};UserID={Settings.Default.User};Password={Settings.Default.Pass};Database={Settings.Default.WorldDbName};CharacterSet=utf8;ConnectionTimeout=5;ConnectionProtocol=Pipe;";
+                        $"Server=localhost;Pipe={ConfigurationManager.AppSettings["PortOrPipe"]};UserID={ConfigurationManager.AppSettings["User"]};Password={ConfigurationManager.AppSettings["Pass"]};Database={ConfigurationManager.AppSettings["WorldDbName"]};CharacterSet=utf8;ConnectionTimeout=5;ConnectionProtocol=Pipe;";
 
                 return
-                    $"Server={Settings.Default.Host};Port={Settings.Default.PortOrPipe};UserID={Settings.Default.User};Password={Settings.Default.Pass};Database={Settings.Default.WorldDbName};CharacterSet=utf8;ConnectionTimeout=5;";
+                    $"Server={ConfigurationManager.AppSettings["Host"]};Port={ConfigurationManager.AppSettings["PortOrPipe"]};UserID={ConfigurationManager.AppSettings["User"]};Password={ConfigurationManager.AppSettings["Pass"]};Database={ConfigurationManager.AppSettings["WorldDbName"]};CharacterSet=utf8;ConnectionTimeout=5;";
             }
         }
 
@@ -135,7 +134,7 @@ namespace SpellWork.Database
 
         public static void TestConnect()
         {
-            if (!Settings.Default.UseDbConnect)
+            if (!ConfigurationManager.AppSettings["UseDbConnect"].ToLower().Equals("true"))
             {
                 Connected = false;
                 return;
@@ -150,7 +149,8 @@ namespace SpellWork.Database
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show($"Errno {ex.Number}{Environment.NewLine}{ex.Message}");
+                //MessageBox.Show($"Errno {ex.Number}{Environment.NewLine}{ex.Message}");
+                Console.Error.WriteLine($"Errno {ex.Number}{Environment.NewLine}{ex.Message}");
                 Connected = false;
             }
             catch

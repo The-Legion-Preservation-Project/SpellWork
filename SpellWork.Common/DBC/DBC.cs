@@ -2,11 +2,11 @@ using SpellWork.Database;
 using SpellWork.DBC.Structures;
 using SpellWork.GameTables;
 using SpellWork.GameTables.Structures;
-using SpellWork.Properties;
 using SpellWork.Spell;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -385,7 +385,7 @@ namespace SpellWork.DBC
             foreach (var spell in SpellInfoStore)
                 spell.Value.UpdateAreaRelatedFields();
 
-            GameTable<GtSpellScalingEntry>.Open($@"{Settings.Default.GtPath}\SpellScaling.txt");
+            GameTable<GtSpellScalingEntry>.Open($@"{ConfigurationManager.AppSettings["GtPath"]}\SpellScaling.txt");
         }
 
         public static uint SelectedLevel = MaxLevel;

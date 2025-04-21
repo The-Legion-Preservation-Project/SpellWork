@@ -5,6 +5,11 @@
         <Nullable>disable</Nullable>
         <RootNamespace>SpellWork</RootNamespace>
         <LangVersion>13</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MySql.Data" Version="9.3.0" />
+    </ItemGroup>
 
 </Project>

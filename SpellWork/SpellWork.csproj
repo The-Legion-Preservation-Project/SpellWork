@@ -63,12 +63,30 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.5.1\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.30.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.30.0\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4, Version=1.3.8.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Compression.LZ4.1.3.8\lib\net462\K4os.Compression.LZ4.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4.Streams, Version=1.3.8.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Compression.LZ4.Streams.1.3.8\lib\net462\K4os.Compression.LZ4.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Hash.xxHash, Version=1.0.8.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Hash.xxHash.1.0.8\lib\net462\K4os.Hash.xxHash.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
-    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=9.3.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.9.3.0\lib\net48\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -77,6 +95,10 @@
     <Reference Include="System.Collections.Immutable, Version=9.0.0.4, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.9.0.4\lib\net462\System.Collections.Immutable.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.9.0.4\lib\net462\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -84,10 +106,17 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Formats.Nrbf, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Formats.Nrbf.9.0.4\lib\net462\System.Formats.Nrbf.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Pipelines, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.5.0.2\lib\net461\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -104,62 +133,24 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ZstdSharp, Version=0.8.5.0, Culture=neutral, PublicKeyToken=8d151af33a4ad5cf, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZstdSharp.Port.0.8.5\lib\net462\ZstdSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\MySQLConnect.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Database\Structures.cs" />
-    <Compile Include="DBC\Structures\AreaGroupMemberEntry.cs" />
-    <Compile Include="DBC\Structures\AreaTableEntry.cs" />
-    <Compile Include="DBC\Structures\ItemEffectEntry.cs" />
-    <Compile Include="DBC\Structures\ItemEntry.cs" />
-    <Compile Include="DBC\Structures\ItemSparseEntry.cs" />
-    <Compile Include="DBC\Structures\OverrideSpellDataEntry.cs" />
-    <Compile Include="DBC\Structures\MapEntry.cs" />
-    <Compile Include="DBC\Structures\RandPropPointsEntry.cs" />
-    <Compile Include="DBC\Structures\ScreenEffectEntry.cs" />
-    <Compile Include="DBC\Structures\SkillLineAbilityEntry.cs" />
-    <Compile Include="DBC\Structures\SkillLineEntry.cs" />
-    <Compile Include="DBC\Structures\SpellAuraOptionsEntry.cs" />
-    <Compile Include="DBC\Structures\SpellAuraRestrictionsEntry.cs" />
-    <Compile Include="DBC\Structures\SpellCastingRequirementsEntry.cs" />
-    <Compile Include="DBC\Structures\SpellCastTimesEntry.cs" />
-    <Compile Include="DBC\Structures\SpellCategoriesEntry.cs" />
-    <Compile Include="DBC\Structures\SpellClassOptionsEntry.cs" />
-    <Compile Include="DBC\Structures\SpellCooldownsEntry.cs" />
-    <Compile Include="DBC\Structures\SpellDescriptionVariablesEntry.cs" />
-    <Compile Include="DBC\Structures\SpellDurationEntry.cs" />
-    <Compile Include="DBC\Structures\SpellEffectEntry.cs" />
-    <Compile Include="DBC\Structures\SpellEffectScalingEntry.cs" />
-    <Compile Include="DBC\Structures\SpellEntry.cs" />
-    <Compile Include="DBC\Structures\SpellEquippedItemsEntry.cs" />
-    <Compile Include="DBC\Structures\SpellInterruptsEntry.cs" />
-    <Compile Include="DBC\Structures\SpellLevelsEntry.cs" />
-    <Compile Include="DBC\Structures\SpellMiscEntry.cs" />
-    <Compile Include="DBC\Structures\SpellMissileEntry.cs" />
-    <Compile Include="DBC\Structures\SpellMissileMotionEntry.cs" />
-    <Compile Include="DBC\Structures\SpellPowerEntry.cs" />
-    <Compile Include="DBC\Structures\SpellProcsPerMinuteEntry.cs" />
-    <Compile Include="DBC\Structures\SpellRadiusEntry.cs" />
-    <Compile Include="DBC\Structures\SpellRangeEntry.cs" />
-    <Compile Include="DBC\Structures\SpellReagentsCurrencyEntry.cs" />
-    <Compile Include="DBC\Structures\SpellReagentsEntry.cs" />
-    <Compile Include="DBC\Structures\SpellScalingEntry.cs" />
-    <Compile Include="DBC\Structures\SpellShapeshiftEntry.cs" />
-    <Compile Include="DBC\Structures\SpellTargetRestrictionsEntry.cs" />
-    <Compile Include="DBC\Structures\SpellTotemsEntry.cs" />
-    <Compile Include="DBC\Structures\SpellVisualEntry.cs" />
-    <Compile Include="DBC\Structures\SpellXSpellVisualEntry.cs" />
     <Compile Include="Extensions\CheckedListBoxExtensions.cs" />
     <Compile Include="Extensions\ComboBoxExtensions.cs" />
+    <Compile Include="Extensions\SpellInfoExtensions.cs" />
     <Compile Include="Extensions\TreeViewExtensions.cs" />
-    <Compile Include="DBC\DBC.cs" />
     <Compile Include="Forms\FormCalculateFlags.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,22 +175,6 @@
     <Compile Include="Forms\FormSpellScaling.Designer.cs">
       <DependentUpon>FormSpellScaling.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameTables\GameTables.cs" />
-    <Compile Include="GameTables\Structures\GtSpellScalingEntry.cs" />
-    <Compile Include="Parser\BitStream.cs" />
-    <Compile Include="Parser\ColumnStructureEntry.cs" />
-    <Compile Include="Parser\Common.cs" />
-    <Compile Include="Parser\DBHeader.cs" />
-    <Compile Include="Parser\DBReader.cs" />
-    <Compile Include="Parser\DBReaderExtensions.cs" />
-    <Compile Include="Parser\Definitions.cs" />
-    <Compile Include="Parser\FieldStructureEntry.cs" />
-    <Compile Include="Parser\FloatUtil.cs" />
-    <Compile Include="Parser\RelationShipData.cs" />
-    <Compile Include="Parser\StringTable.cs" />
-    <Compile Include="Parser\WDB5.cs" />
-    <Compile Include="Parser\WDB6.cs" />
-    <Compile Include="Parser\WDC1.cs" />
     <Compile Include="Spell\ProcInfo.cs">
     </Compile>
     <Compile Include="Extensions\RichTextBoxExtensions.cs" />
@@ -212,7 +187,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Spell\SpellInfo.cs" />
     <EmbeddedResource Include="Forms\FormCalculateFlags.resx">
       <DependentUpon>FormCalculateFlags.cs</DependentUpon>
     </EmbeddedResource>
@@ -239,10 +213,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>

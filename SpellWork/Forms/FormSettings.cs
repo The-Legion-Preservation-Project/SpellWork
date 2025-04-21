@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Windows.Forms;
 using SpellWork.Database;
 using SpellWork.Properties;
@@ -20,15 +21,15 @@ namespace SpellWork.Forms
 
         private void BSaveSettingsClick(object sender, EventArgs e)
         {
-            Settings.Default.Host = _tbHost.Text;
-            Settings.Default.PortOrPipe = _tbPort.Text;
-            Settings.Default.User = _tbUser.Text;
-            Settings.Default.Pass = _tbPass.Text;
-            Settings.Default.WorldDbName = _tbBase.Text;
-            Settings.Default.UseDbConnect = _cbUseDBConnect.Checked;
-            Settings.Default.DbcPath = _tbPath.Text;
-            Settings.Default.GtPath = _tbGtPath.Text;
-            Settings.Default.Locale = _tbLocale.Text;
+            ConfigurationManager.AppSettings["Host"] = _tbHost.Text;
+            ConfigurationManager.AppSettings["PortOrPipe"] = _tbPort.Text;
+            ConfigurationManager.AppSettings["User"] = _tbUser.Text;
+            ConfigurationManager.AppSettings["Pass"] = _tbPass.Text;
+            ConfigurationManager.AppSettings["WorldDbName"] = _tbBase.Text;
+            ConfigurationManager.AppSettings["UseDbConnect"] = _cbUseDBConnect.Checked ? "true" : "false";
+            ConfigurationManager.AppSettings["DbcPath"] = _tbPath.Text;
+            ConfigurationManager.AppSettings["GtPath"] = _tbGtPath.Text;
+            ConfigurationManager.AppSettings["Locale"] = _tbLocale.Text;
 
             MySqlConnection.TestConnect();
 
@@ -47,15 +48,15 @@ namespace SpellWork.Forms
 
         private void SettingsFormLoad(object sender, EventArgs e)
         {
-            _tbHost.Text = Settings.Default.Host;
-            _tbPort.Text = Settings.Default.PortOrPipe;
-            _tbUser.Text = Settings.Default.User;
-            _tbPass.Text = Settings.Default.Pass;
-            _tbBase.Text = Settings.Default.WorldDbName;
-            _gbDbSetting.Enabled = _cbUseDBConnect.Checked = Settings.Default.UseDbConnect;
-            _tbPath.Text = Settings.Default.DbcPath;
-            _tbGtPath.Text = Settings.Default.GtPath;
-            _tbLocale.Text = Settings.Default.Locale;
+            _tbHost.Text = ConfigurationManager.AppSettings["Host"];
+            _tbPort.Text = ConfigurationManager.AppSettings["PortOrPipe"];
+            _tbUser.Text = ConfigurationManager.AppSettings["User"];
+            _tbPass.Text = ConfigurationManager.AppSettings["Pass"];
+            _tbBase.Text = ConfigurationManager.AppSettings["WorldDbName"];
+            _gbDbSetting.Enabled = _cbUseDBConnect.Checked = ConfigurationManager.AppSettings["UseDbConnect"].Equals("true");
+            _tbPath.Text = ConfigurationManager.AppSettings["DbcPath"];
+            _tbGtPath.Text = ConfigurationManager.AppSettings["GtPath"];
+            _tbLocale.Text = ConfigurationManager.AppSettings["Locale"];
         }
 
         private void FormSettings_KeyDown(object sender, KeyEventArgs e)
@@ -68,7 +69,7 @@ namespace SpellWork.Forms
         {
             if (folderBrowserDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                Settings.Default.DbcPath = folderBrowserDialog1.SelectedPath;
+                ConfigurationManager.AppSettings["DbcPath"] = folderBrowserDialog1.SelectedPath;
                 Settings.Default.Save();
             }
         }

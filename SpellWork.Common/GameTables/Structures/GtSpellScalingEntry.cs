@@ -1,7 +1,7 @@
 ﻿namespace SpellWork.GameTables.Structures
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    internal class GtSpellScalingEntry : GameTableRecord
+    public class GtSpellScalingEntry : GameTableRecord
     {
         // ReSharper disable MemberCanBePrivate.Global
         public uint ID;

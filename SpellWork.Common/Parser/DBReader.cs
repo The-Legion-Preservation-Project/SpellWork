@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
+using System.Configuration;
 using System.IO;
-using System.Windows.Forms;
 using System.Text;
-using System.Diagnostics;
-using System.Runtime.Serialization.Formatters.Binary;
 using SpellWork.Extensions;
 using System.Reflection;
-using SpellWork.Properties;
 
 namespace SpellWork.Parser
 {
@@ -111,7 +106,7 @@ namespace SpellWork.Parser
 
 		public void Read()
 		{
-			Read(new MemoryStream(File.ReadAllBytes($@"{ Settings.Default.DbcPath }\{ Settings.Default.Locale }\{ FileName }")), FileName);
+			Read(new MemoryStream(File.ReadAllBytes($@"{ ConfigurationManager.AppSettings["DbcPath"] }\{ ConfigurationManager.AppSettings["Locale"] }\{ FileName }")), FileName);
 		}
         public FieldStructureEntry[] GetBits(DBHeader Header)
         {
