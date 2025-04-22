@@ -7,6 +7,6 @@ public class DBCLoaderService(IConfiguration configuration) : BackgroundService
         await Task.Yield();
 
         // TODO: this should actually be async
-        DBC.DBC.Load(configuration.GetValue<string>("DbcPath"), configuration.GetValue<string>("Locale"), configuration.GetValue<string>("GtPath"));
+        await DBC.DBC.Load(configuration.GetValue<string>("DbcPath"), configuration.GetValue<string>("Locale"), configuration.GetValue<string>("GtPath"));
     }
 }
