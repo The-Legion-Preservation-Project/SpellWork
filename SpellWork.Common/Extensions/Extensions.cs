@@ -39,6 +39,21 @@ public static class Extensions
         return arg != 0 ? builder.AppendFormat(format, arg).AppendLine() : builder;
     }
 
+    public static StringBuilder AppendFormatLineIfNotNull(this StringBuilder builder, string format, float arg)
+    {
+        return arg != 0 ? builder.AppendFormat(format, arg).AppendLine() : builder;
+    }
+
+    public static StringBuilder AppendFormatLineIfNotNull(this StringBuilder builder, string format, string arg)
+    {
+        if (!string.IsNullOrEmpty(arg))
+        {
+            return builder.AppendFormat(format, arg).AppendLine();
+        }
+
+        return builder;
+    }
+
     public static uint ToUInt32(this object val)
     {
         if (val == null)

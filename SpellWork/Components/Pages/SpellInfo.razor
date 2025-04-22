@@ -1,4 +1,5 @@
 ﻿@page "/spell/info"
+@using System.Text
 @using SpellWork.DBC
 @using SpellWork.Extensions
 @using SpellWork.Models
@@ -15,7 +16,7 @@
 </MudCard>
 </EditForm>
 
-<MudTable ServerData="ServerReload" Hover="true" Dense="true" @ref="table" Class="mt-8">
+<MudTable T="SpellInfoSearchResult" ServerData="ServerReload" Hover="true" Dense="true" @ref="table" OnRowClick="RowClickEvent" Class="mt-8">
     <HeaderContent>
         <MudTh><MudTableSortLabel SortLabel="id_field" T="SpellInfoSearchResult">Id</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="name_field" T="SpellInfoSearchResult">Name</MudTableSortLabel></MudTh>
@@ -37,9 +38,14 @@
     </PagerContent>
 </MudTable>
 
+<MudPaper Class="mt-8">
+    <MudText>@_selectedSpellInfo</MudText>
+</MudPaper>
+
 @code {
     private readonly SpellInfoSearch _model = new();
     private MudTable<SpellInfoSearchResult> table;
+    private MarkupString _selectedSpellInfo;
 
     private void PerformSearch(EditContext context)
     {
@@ -85,5 +91,21 @@
 
         data = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
         return new TableData<SpellInfoSearchResult> { TotalItems = results.Count, Items = data };
+    }
+
+    private void RowClickEvent(TableRowClickEventArgs<SpellInfoSearchResult> tableRowClickEventArgs)
+    {
+        if (tableRowClickEventArgs.Item != null)
+        {
+            if (!DBC.SpellInfoStore.TryGetValue(tableRowClickEventArgs.Item.SpellId, out var spellInfo))
+            {
+                return;
+            }
+
+            var sb = new StringBuilder();
+            spellInfo.Write(sb);
+
+            _selectedSpellInfo = new MarkupString(sb.ToString().Replace("\n", "<br />"));
+        }
     }
 }
