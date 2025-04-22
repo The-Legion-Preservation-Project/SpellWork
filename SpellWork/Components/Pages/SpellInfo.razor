@@ -1,44 +1,44 @@
-﻿@page "/spell/info"
+﻿@page "/"
 @using System.Text
 @using SpellWork.DBC
 @using SpellWork.Extensions
 @using SpellWork.Models
 
-<EditForm Model="@_model" OnValidSubmit="PerformSearch" FormName="SpellInfoSearch">
-<DataAnnotationsValidator />
-<MudCard>
-    <MudCardContent>
-        <MudTextField Label="ID or Name" @bind-Value="_model.IdOrName" For="@(() => _model.IdOrName)" />
-    </MudCardContent>
-    <MudCardActions>
-        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
-    </MudCardActions>
-</MudCard>
-</EditForm>
+<MudDrawer Open="true" ClipMode="DrawerClipMode.Always" Width="450px">
+    <MudContainer Class="pa-4">
+<!--
+        <MudNavMenu>
+            <MudNavLink Href="/">Spell Info</MudNavLink>
+        </MudNavMenu>
+-->
 
-<MudTable T="SpellInfoSearchResult" ServerData="ServerReload" Hover="true" Dense="true" @ref="table" OnRowClick="RowClickEvent" Class="mt-8">
-    <HeaderContent>
-        <MudTh><MudTableSortLabel SortLabel="id_field" T="SpellInfoSearchResult">Id</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="name_field" T="SpellInfoSearchResult">Name</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="miscid_field" T="SpellInfoSearchResult">Misc Id</MudTableSortLabel></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Id">@context.SpellId</MudTd>
-        <MudTd DataLabel="Name">@context.SpellName</MudTd>
-        <MudTd DataLabel="MiscId">@context.SpellMiscId</MudTd>
-    </RowTemplate>
-    <NoRecordsContent>
-        <MudText>No matching spells found</MudText>
-    </NoRecordsContent>
-    <LoadingContent>
-        <MudText>Loading...</MudText>
-    </LoadingContent>
-    <PagerContent>
-        <MudTablePager />
-    </PagerContent>
-</MudTable>
+        <EditForm Model="@_model" OnValidSubmit="PerformSearch" FormName="SpellInfoSearch">
+            <MudTextField Label="ID or Name" @bind-Value="_model.IdOrName" For="@(() => _model.IdOrName)"/>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-6">Search</MudButton>
+        </EditForm>
 
-<MudPaper Class="mt-8">
+        <MudTable T="SpellInfoSearchResult" ServerData="ServerReload" Hover="true" Dense="true" @ref="table" FixedHeader="true" Virtualize="true" OnRowClick="RowClickEvent" Class="mt-8" Height="300px">
+            <HeaderContent>
+                <MudTh><MudTableSortLabel SortLabel="id_field" T="SpellInfoSearchResult">Id</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="name_field" T="SpellInfoSearchResult">Name</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="miscid_field" T="SpellInfoSearchResult">Misc Id</MudTableSortLabel></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Id">@context.SpellId</MudTd>
+                <MudTd DataLabel="Name">@context.SpellName</MudTd>
+                <MudTd DataLabel="MiscId">@context.SpellMiscId</MudTd>
+            </RowTemplate>
+            <NoRecordsContent>
+                <MudText>No matching spells found</MudText>
+            </NoRecordsContent>
+            <LoadingContent>
+                <MudText>Loading...</MudText>
+            </LoadingContent>
+        </MudTable>
+    </MudContainer>
+</MudDrawer>
+
+<MudPaper Class="pa-4">
     <MudText>@_selectedSpellInfo</MudText>
 </MudPaper>
 
@@ -59,17 +59,19 @@
         {
             var id = _model.IdOrName.ToUInt32();
 
-            foreach (var spellInfo in DBC.SpellInfoStore)
+            foreach (var entry in DBC.SpellInfoStore)
             {
-                if (id != 0 && spellInfo.Value.ID == id)
+                var spellInfo = entry.Value;
+
+                if (id != 0 && spellInfo.ID == id)
                 {
-                    results.Add(new SpellInfoSearchResult(spellInfo.Value));
+                    results.Add(new SpellInfoSearchResult(spellInfo));
                     continue;
                 }
 
-                if (spellInfo.Value.Name.ToLowerInvariant().ContainsText(_model.IdOrName.ToLowerInvariant()))
+                if (spellInfo.Name.ToLowerInvariant().Contains(_model.IdOrName.ToLowerInvariant()))
                 {
-                    results.Add(new SpellInfoSearchResult(spellInfo.Value));
+                    results.Add(new SpellInfoSearchResult(spellInfo));
                     continue;
                 }
             }
@@ -89,7 +91,7 @@
                 break;
         }
 
-        data = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+        //data = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
         return new TableData<SpellInfoSearchResult> { TotalItems = results.Count, Items = data };
     }
 
