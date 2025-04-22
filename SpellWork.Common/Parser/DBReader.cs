@@ -11,7 +11,7 @@ namespace SpellWork.Parser
     public class DBReader<T> : Dictionary<int, T> where T : class, new()
     {
         T definition { get; set; }
-        public DBReader()
+        public DBReader(string dbcPath, string locale)
         {
             definition = new T();
 
@@ -19,7 +19,7 @@ namespace SpellWork.Parser
             if (nameAttr == null)
                 throw new Exception("Missing DBFileName Attribute at " + definition.GetType());
             FileName = nameAttr.Filename + ".db2";
-            Read();
+            Read(dbcPath, locale);
         }
         public string ErrorMessage { get; set; }
 
@@ -104,10 +104,12 @@ namespace SpellWork.Parser
 			}
 		}
 
-		public void Read()
-		{
-			Read(new MemoryStream(File.ReadAllBytes($@"{ ConfigurationManager.AppSettings["DbcPath"] }\{ ConfigurationManager.AppSettings["Locale"] }\{ FileName }")), FileName);
+		public void Read(string dbcPath, string locale)
+        {
+            var fileName = Path.Combine(dbcPath, locale, FileName);
+			Read(new MemoryStream(File.ReadAllBytes(fileName)), FileName);
 		}
+
         public FieldStructureEntry[] GetBits(DBHeader Header)
         {
             //if (!Header.IsTypeOf<WDB5>())
@@ -133,7 +135,7 @@ namespace SpellWork.Parser
 				return;
 
             TypeCode[] columnTypes = Parser.GetColumnTypes<T>(); //entry.Data.Columns.Cast<DataColumn>().Select(x => Type.GetTypeCode(x.DataType)).ToArray();
-            
+
 			FieldStructureEntry[] bits = GetBits(Header);
 
             int recordcount = Math.Max(Header.OffsetLengths.Length, (int)Header.RecordCount);
@@ -334,7 +336,7 @@ namespace SpellWork.Parser
 			//entry.Data.EndLoadData();
 		}
 		#endregion
-        
+
 
 	}
 }

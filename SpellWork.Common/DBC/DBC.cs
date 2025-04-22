@@ -75,7 +75,7 @@ namespace SpellWork.DBC
         public static readonly IDictionary<int, ISet<int>> SpellTriggerStore = new Dictionary<int, ISet<int>>();
         public static readonly Dictionary<int, List<ItemEffectEntry>> ItemEffectStore = new Dictionary<int, List<ItemEffectEntry>>();
 
-        public static async void Load()
+        public static async void Load(string dbcPath, string locale, string gtPath)
         {
             Parallel.ForEach(
                     typeof(DBC).GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic), dbc =>
@@ -90,7 +90,7 @@ namespace SpellWork.DBC
                         var name = nameAttr.Filename;
                         try
                         {
-                            dbc.SetValue(dbc.GetValue(null), Activator.CreateInstance(dbc.PropertyType));
+                            dbc.SetValue(dbc.GetValue(null), Activator.CreateInstance(dbc.PropertyType, dbcPath, locale));
                         }
                         catch (DirectoryNotFoundException)
                         {
@@ -385,7 +385,7 @@ namespace SpellWork.DBC
             foreach (var spell in SpellInfoStore)
                 spell.Value.UpdateAreaRelatedFields();
 
-            GameTable<GtSpellScalingEntry>.Open($@"{ConfigurationManager.AppSettings["GtPath"]}\SpellScaling.txt");
+            GameTable<GtSpellScalingEntry>.Open(Path.Combine(gtPath, "SpellScaling.txt"));
         }
 
         public static uint SelectedLevel = MaxLevel;

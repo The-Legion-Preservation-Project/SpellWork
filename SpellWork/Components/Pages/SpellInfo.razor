@@ -1,0 +1,89 @@
+﻿@page "/spell/info"
+@using SpellWork.DBC
+@using SpellWork.Extensions
+@using SpellWork.Models
+
+<EditForm Model="@_model" OnValidSubmit="PerformSearch" FormName="SpellInfoSearch">
+<DataAnnotationsValidator />
+<MudCard>
+    <MudCardContent>
+        <MudTextField Label="ID or Name" @bind-Value="_model.IdOrName" For="@(() => _model.IdOrName)" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
+    </MudCardActions>
+</MudCard>
+</EditForm>
+
+<MudTable ServerData="ServerReload" Hover="true" Dense="true" @ref="table" Class="mt-8">
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="id_field" T="SpellInfoSearchResult">Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="name_field" T="SpellInfoSearchResult">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="miscid_field" T="SpellInfoSearchResult">Misc Id</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.SpellId</MudTd>
+        <MudTd DataLabel="Name">@context.SpellName</MudTd>
+        <MudTd DataLabel="MiscId">@context.SpellMiscId</MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching spells found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@code {
+    private readonly SpellInfoSearch _model = new();
+    private MudTable<SpellInfoSearchResult> table;
+
+    private void PerformSearch(EditContext context)
+    {
+        table.ReloadServerData();
+    }
+
+    private async Task<TableData<SpellInfoSearchResult>> ServerReload(TableState state, CancellationToken token)
+    {
+        List<SpellInfoSearchResult> results = [];
+        if (!string.IsNullOrWhiteSpace(_model.IdOrName))
+        {
+            var id = _model.IdOrName.ToUInt32();
+
+            foreach (var spellInfo in DBC.SpellInfoStore)
+            {
+                if (id != 0 && spellInfo.Value.ID == id)
+                {
+                    results.Add(new SpellInfoSearchResult(spellInfo.Value));
+                    continue;
+                }
+
+                if (spellInfo.Value.Name.ToLowerInvariant().ContainsText(_model.IdOrName.ToLowerInvariant()))
+                {
+                    results.Add(new SpellInfoSearchResult(spellInfo.Value));
+                    continue;
+                }
+            }
+        }
+
+        IEnumerable<SpellInfoSearchResult> data = results;
+        switch (state.SortLabel)
+        {
+            case "id_field":
+                data = data.OrderByDirection(state.SortDirection, r => r.SpellId);
+                break;
+            case "name_field":
+                data = data.OrderByDirection(state.SortDirection, r => r.SpellName);
+                break;
+            case "miscid_field":
+                data = data.OrderByDirection(state.SortDirection, r => r.SpellMiscId);
+                break;
+        }
+
+        data = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+        return new TableData<SpellInfoSearchResult> { TotalItems = results.Count, Items = data };
+    }
+}
