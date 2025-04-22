@@ -3,6 +3,7 @@
 @using SpellWork.DBC
 @using SpellWork.Extensions
 @using SpellWork.Models
+@using SpellWork.Spell
 
 <!--
 <MudDrawer Open="true" ClipMode="DrawerClipMode.Always" Width="450px">
@@ -21,9 +22,30 @@
                 <MudCard>
                     <MudCardContent>
                         <MudTextField Label="ID or Name" @bind-Value="_model.IdOrName" For="@(() => _model.IdOrName)"/>
+                        <MudSelect @ref="_familySelect" T="SpellFamilyNames?" @bind-Value="_model.Family" Class="mt-4" Label="Family" Clearable="true">
+                            @foreach (var type in (SpellFamilyNames[])Enum.GetValues(typeof(SpellFamilyNames)))
+                            {
+                                <MudSelectItem T="SpellFamilyNames?" Value="@type">(@(((int)type).ToString("000"))) @type.ToString()</MudSelectItem>
+                            }
+                        </MudSelect>
+                        <MudSelect @ref="_auraSelect" T="AuraType?" @bind-Value="_model.Aura" Class="mt-4" Label="Aura" Clearable="true">
+                            @foreach (var type in (AuraType[])Enum.GetValues(typeof(AuraType)))
+                            {
+                                <MudSelectItem T="AuraType?" Value="@type">(@(((int)type).ToString("000"))) @type.ToString()</MudSelectItem>
+                            }
+                        </MudSelect>
+                        <MudSelect @ref="_effectSelect" T="SpellEffects?" @bind-Value="_model.Effect" Class="mt-4" Label="Effect" Clearable="true">
+                            @foreach (var type in (SpellEffects[])Enum.GetValues(typeof(SpellEffects)))
+                            {
+                                <MudSelectItem T="SpellEffects?" Value="@type">(@(((int)type).ToString("000"))) @type.ToString()</MudSelectItem>
+                            }
+                        </MudSelect>
                     </MudCardContent>
                     <MudCardActions>
-                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-6">Search</MudButton>
+                        <div class="ml-auto">
+                            <MudButton Color="Color.Secondary" OnClick="ResetForm">Reset</MudButton>
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-2 mr-2">Search</MudButton>
+                        </div>
                     </MudCardActions>
                 </MudCard>
             </EditForm>
@@ -52,10 +74,17 @@
         </MudStack>
     </MudItem>
     <MudItem xs="12" md="6" lg="7" xl="8">
-        @if (!string.IsNullOrWhiteSpace(_selectedSpellInfo.Value))
+        @if (_selectedSpellId != null)
         {
             <MudPaper Class="pa-4 mud-width-full">
-                <MudText>@_selectedSpellInfo</MudText>
+                <MudButton Href="@($"https://wowhead.com/spell={_selectedSpellId}")"
+                           Target="_blank"
+                           Variant="Variant.Filled"
+                           EndIcon="@Icons.Material.Filled.Link"
+                           Color="Color.Primary">
+                    Wowhead
+                </MudButton>
+                <MudText Class="mt-2">@_selectedSpellInfo</MudText>
             </MudPaper>
         }
     </MudItem>
@@ -64,6 +93,10 @@
 @code {
     private readonly SpellInfoSearch _model = new();
     private MudTable<SpellInfoSearchResult> _table;
+    private MudSelect<SpellFamilyNames?> _familySelect;
+    private MudSelect<AuraType?> _auraSelect;
+    private MudSelect<SpellEffects?> _effectSelect;
+    private int? _selectedSpellId = null;
     private MarkupString _selectedSpellInfo;
 
     private void PerformSearch(EditContext context)
@@ -74,25 +107,41 @@
     private async Task<TableData<SpellInfoSearchResult>> ServerReload(TableState state, CancellationToken token)
     {
         List<SpellInfoSearchResult> results = [];
-        if (!string.IsNullOrWhiteSpace(_model.IdOrName))
+        if (_model.HasAnyFilter())
         {
             var id = _model.IdOrName.ToUInt32();
+            var name = _model.IdOrName;
 
             foreach (var entry in DBC.SpellInfoStore)
             {
                 var spellInfo = entry.Value;
 
-                if (id != 0 && spellInfo.ID == id)
+                if (id != 0 && spellInfo.ID != id)
                 {
-                    results.Add(new SpellInfoSearchResult(spellInfo));
                     continue;
                 }
 
-                if (spellInfo.Name.ToLowerInvariant().Contains(_model.IdOrName.ToLowerInvariant()))
+                if (!string.IsNullOrWhiteSpace(name) && !spellInfo.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
                 {
-                    results.Add(new SpellInfoSearchResult(spellInfo));
                     continue;
                 }
+
+                if (_model.Family.HasValue && spellInfo.SpellFamilyName != (int)_model.Family.Value)
+                {
+                    continue;
+                }
+
+                if (_model.Aura.HasValue && !spellInfo.HasAura(_model.Aura.Value))
+                {
+                    continue;
+                }
+
+                if (_model.Effect.HasValue && !spellInfo.HasEffect(_model.Effect.Value))
+                {
+                    continue;
+                }
+
+                results.Add(new SpellInfoSearchResult(spellInfo));
             }
         }
 
@@ -123,10 +172,32 @@
                 return;
             }
 
+            _selectedSpellId = tableRowClickEventArgs.Item.SpellId;
+
             var sb = new StringBuilder();
             spellInfo.Write(sb);
 
             _selectedSpellInfo = new MarkupString(sb.ToString().Replace("\n", "<br />"));
         }
+        else
+        {
+            _selectedSpellId = null;
+        }
+    }
+
+    private void ResetForm()
+    {
+        _selectedSpellId = null;
+
+        _model.IdOrName = string.Empty;
+        _model.Family = null;
+        _model.Aura = null;
+        _model.Effect = null;
+
+        _familySelect.ClearAsync();
+        _auraSelect.ClearAsync();
+        _effectSelect.ClearAsync();
+
+        _table.ReloadServerData();
     }
 }
