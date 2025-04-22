@@ -4,52 +4,71 @@
 @using SpellWork.Extensions
 @using SpellWork.Models
 
+<!--
 <MudDrawer Open="true" ClipMode="DrawerClipMode.Always" Width="450px">
     <MudContainer Class="pa-4">
-<!--
         <MudNavMenu>
             <MudNavLink Href="/">Spell Info</MudNavLink>
         </MudNavMenu>
--->
-
-        <EditForm Model="@_model" OnValidSubmit="PerformSearch" FormName="SpellInfoSearch">
-            <MudTextField Label="ID or Name" @bind-Value="_model.IdOrName" For="@(() => _model.IdOrName)"/>
-            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-6">Search</MudButton>
-        </EditForm>
-
-        <MudTable T="SpellInfoSearchResult" ServerData="ServerReload" Hover="true" Dense="true" @ref="table" FixedHeader="true" Virtualize="true" OnRowClick="RowClickEvent" Class="mt-8" Height="300px">
-            <HeaderContent>
-                <MudTh><MudTableSortLabel SortLabel="id_field" T="SpellInfoSearchResult">Id</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortLabel="name_field" T="SpellInfoSearchResult">Name</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortLabel="miscid_field" T="SpellInfoSearchResult">Misc Id</MudTableSortLabel></MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd DataLabel="Id">@context.SpellId</MudTd>
-                <MudTd DataLabel="Name">@context.SpellName</MudTd>
-                <MudTd DataLabel="MiscId">@context.SpellMiscId</MudTd>
-            </RowTemplate>
-            <NoRecordsContent>
-                <MudText>No matching spells found</MudText>
-            </NoRecordsContent>
-            <LoadingContent>
-                <MudText>Loading...</MudText>
-            </LoadingContent>
-        </MudTable>
     </MudContainer>
 </MudDrawer>
+-->
 
-<MudPaper Class="pa-4">
-    <MudText>@_selectedSpellInfo</MudText>
-</MudPaper>
+<MudGrid>
+    <MudItem xs="12" md="6" lg="5" xl="4">
+        <MudStack Class="mb-8 mud-width-full">
+            <EditForm Model="@_model" OnValidSubmit="PerformSearch" FormName="SpellInfoSearch">
+                <MudCard>
+                    <MudCardContent>
+                        <MudTextField Label="ID or Name" @bind-Value="_model.IdOrName" For="@(() => _model.IdOrName)"/>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-6">Search</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </EditForm>
+
+            <MudTable T="SpellInfoSearchResult" ServerData="ServerReload" Hover="true" Dense="true" @ref="_table" OnRowClick="RowClickEvent" Class="mt-8">
+                <HeaderContent>
+                    <MudTh><MudTableSortLabel SortLabel="id_field" T="SpellInfoSearchResult">Id</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortLabel="name_field" T="SpellInfoSearchResult">Name</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortLabel="miscid_field" T="SpellInfoSearchResult">Misc Id</MudTableSortLabel></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Id">@context.SpellId</MudTd>
+                    <MudTd DataLabel="Name">@context.SpellName</MudTd>
+                    <MudTd DataLabel="MiscId" HideSmall="true">@context.SpellMiscId</MudTd>
+                </RowTemplate>
+                <NoRecordsContent>
+                    <MudText>No matching spells found</MudText>
+                </NoRecordsContent>
+                <LoadingContent>
+                    <MudText>Loading...</MudText>
+                </LoadingContent>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
+        </MudStack>
+    </MudItem>
+    <MudItem xs="12" md="6" lg="7" xl="8">
+        @if (!string.IsNullOrWhiteSpace(_selectedSpellInfo.Value))
+        {
+            <MudPaper Class="pa-4 mud-width-full">
+                <MudText>@_selectedSpellInfo</MudText>
+            </MudPaper>
+        }
+    </MudItem>
+</MudGrid>
 
 @code {
     private readonly SpellInfoSearch _model = new();
-    private MudTable<SpellInfoSearchResult> table;
+    private MudTable<SpellInfoSearchResult> _table;
     private MarkupString _selectedSpellInfo;
 
     private void PerformSearch(EditContext context)
     {
-        table.ReloadServerData();
+        _table.ReloadServerData();
     }
 
     private async Task<TableData<SpellInfoSearchResult>> ServerReload(TableState state, CancellationToken token)
@@ -91,7 +110,7 @@
                 break;
         }
 
-        //data = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+        data = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
         return new TableData<SpellInfoSearchResult> { TotalItems = results.Count, Items = data };
     }
 
